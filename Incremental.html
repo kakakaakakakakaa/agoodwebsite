@@ -1,30 +1,32 @@
 <html>
-  <head>
-    <title>Incremental</title>
-  </head>
-  <body>
-    <script>
-	  var value = 0
-      document.write(value+"<br>")
-      document.write("Points Per Click: 1<br>")
-      var upgradecount = 1
-      var prestigelevel = 1
-      function update() {
-      	document.body.innerHTML = '';
-        value = value+upgradecount
-      	var prestigegoal = 25000000*prestigelevel
-      	if(value>=prestigegoal) {
-      		document.write("Congratulations! You have reached 25 Million Points. You can <b>Prestige</b> now! <br>")
-      		document.write('<input type="button" value="Prestige" onclick="prestige()">')
-      	} else {
-		    document.write(value)
-  		  	document.write("<br>Points Per Click: "+upgradecount)
-	   		document.write('<br><input type="button" value="Add 1" onclick="update();" />')
-   	  		document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
-   		  	document.write('<input type="button" value="Save" onclick="save()">')
-	   	  	document.write(' <input type="button" value="Load" onclick="load()">')
-      	}
-      }
+	<head>
+		<title>Incremental</title>
+	</head>
+	<body>
+	  <script>
+    	if(localStorage.points === undefined){
+    		alert("There's no save file, creating one")
+	      	localStorage.setItem("points",0)
+    	  	localStorage.setItem("ppc",1)
+    	  	localStorage.setItem("prestigeLevel",1)
+    	}
+  		load()
+	    function update() {
+		    document.body.innerHTML = '';
+		    value = value+upgradecount
+	      	var prestigegoal = 25000000*prestigelevel
+	      	if(value>=prestigegoal) {
+	      		document.write("Congratulations! You have enough points. You can <b>Prestige</b> now! <br>")
+	      		document.write('<input type="button" value="Prestige" onclick="prestige()">')
+	      	} else {
+			    document.write(value)
+	  		  	document.write("<br>Points Per Click: "+upgradecount)
+		   		document.write('<br><input type="button" value="Add 1" onclick="update();" />')
+	   	  		document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
+	   		  	document.write('<input type="button" value="Save" onclick="save()">')
+		   		document.write(' <input type="button" value="Load" onclick="load()">')
+	      	}
+	    }
       
       function upgrade() {
       	var requirement = upgradecount * 10
@@ -71,10 +73,6 @@
       	save()
       	afterupgrade()
       }
-    </script>
-    <input type="button" value="Add 1" onclick="update();" />
-    <input type="button" value="Upgrade" onclick="upgrade();" /> <br>
-    <input type="button" value="Save" onclick="save()">
-    <input type="button" value="Load" onclick="load();">
-  </body>
+      </script>
+	</body>
 </html>
