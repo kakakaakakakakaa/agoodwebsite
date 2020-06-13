@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>Incremental</title>
+  </head>
+  <body>
+    <script>
+	  var value = 0
+      document.write(value+"<br>")
+      document.write("Points Per Click: 1<br>")
+      var upgradecount = 1
+      var prestigelevel = 1
+      function update() {
+      	document.body.innerHTML = '';
+        value = value+upgradecount
+      	var prestigegoal = 25000000*prestigelevel
+      	if(value>=prestigegoal) {
+      		document.write("Congratulations! You have reached 25 Million Points. You can <b>Prestige</b> now! <br>")
+      		document.write('<input type="button" value="Prestige" onclick="prestige()">')
+      	} else {
+		    document.write(value)
+  		  	document.write("<br>Points Per Click: "+upgradecount)
+	   		document.write('<br><input type="button" value="Add 1" onclick="update();" />')
+   	  		document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
+   		  	document.write('<input type="button" value="Save" onclick="save()">')
+	   	  	document.write(' <input type="button" value="Load" onclick="load()">')
+      	}
+      }
+      
+      function upgrade() {
+      	var requirement = upgradecount * 10
+      	if(value>=requirement) {
+      		value = value - requirement
+      		upgradecount = upgradecount * 2 * prestigelevel
+      		afterupgrade();
+      	}
+      }
+      
+      function afterupgrade() {
+      	document.body.innerHTML = '';
+      	document.write(value)
+      	document.write("<br>Points Per Click: "+upgradecount)
+      	document.write('<br><input type="button" value="Add 1" onclick="update();" />')
+      	document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
+      	document.write('<input type="button" value="Save" onclick="save()">')
+      	document.write(' <input type="button" value="Load" onclick="load()">')
+      }
+      
+      function load() {
+      	value = parseInt(localStorage.getItem("points"))
+      	upgradecount = parseInt(localStorage.getItem("ppc"))
+      	prestigelevel = parseInt(localStorage.getItem("prestigeLevel"))
+      	afterupgrade();
+      }
+      
+      function save() {
+      	localStorage.setItem("points",value)
+      	localStorage.setItem("ppc",upgradecount)
+      	localStorage.setItem("prestigeLevel",prestigelevel)
+      }
+      
+      //function importsave() {
+//      	localStorage.setItem("pointsTest",localStorage.getItem("points"))
+//      	localStorage.setItem("ppcTest",localStorage.getItem("ppc"))
+//      	load();
+//      }
+      
+      function prestige() {
+      	prestigelevel = prestigelevel*2
+      	value = 0
+      	upgradecount = 1
+      	save()
+      	afterupgrade()
+      }
+    </script>
+    <input type="button" value="Add 1" onclick="update();" />
+    <input type="button" value="Upgrade" onclick="upgrade();" /> <br>
+    <input type="button" value="Save" onclick="save()">
+    <input type="button" value="Load" onclick="load();">
+  </body>
+</html>
