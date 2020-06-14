@@ -11,25 +11,47 @@
     	  	localStorage.setItem("prestigeLevel",1)
     	}
   		load()
+  		var continued = false
+  		var upgradeplus = 2 * prestigelevel
 	    function update() {
 		    document.body.innerHTML = '';
 		    value = value+upgradecount
+		    upgradeplus = 2 * prestigelevel  
+		    var requirement = upgradecount * 10
 	      	var prestigegoal = 25000000*prestigelevel
-	      	if(value>=prestigegoal) {
-	      		document.write("Congratulations! You have enough points. You can <b>Prestige</b> now! <br>")
-	      		document.write('<input type="button" value="Prestige" onclick="prestige()">')
-	      	} else {
-			    document.write(value)
-	  		  	document.write("<br>Points Per Click: "+upgradecount)
-		   		document.write('<br><input type="button" value="Add 1" onclick="update();" />')
-	   	  		document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
-	   		  	document.write('<input type="button" value="Save" onclick="save()">')
-		   		document.write(' <input type="button" value="Load" onclick="load()">')
+	      	if(value = Infinity) {
+	      		document.write("Congratulations! You have reached Infinity, the end of the game. Are you proud of yourself?")
+	      		document.write("<br>Since you have infinite points they keep multiplying! Now you can reset your save to unlock AutoClickers!<br>")
+	   			document.write("(AutoClickers are still not added, please be patient, I'm just some random 13 y/o in the internet, not a professional developer!)<br>")
+	   			document.write('<input type="button" value="Reset" onclick="reset()">')
+	      	} else{ 
+	      		if(value>=prestigegoal && continued == false) {
+	      			document.write("Congratulations! You have enough points. You can <b>Prestige</b> now! <br>")
+	      			document.write('<input type="button" value="Prestige" onclick="prestige()">')
+	      			document.write(' <input type="button" value="Continue" onclick="continueplaying()">')
+	      		} 
+	      		else {
+				    document.write(value+" points")
+		  		  	document.write("<br>Points Per Click: "+upgradecount)
+	  			  	document.write("<br>Next upgrade cost: "+requirement)
+	  			  	document.write("<br>Prestige multiplier: "+prestigelevel+" (Upgrades give x"+upgradeplus+" points per click)")
+		   			document.write('<br><input type="button" value="Add 1" onclick="update();" />')
+		   	  		document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
+		   	  		if(value>=prestigegoal) {document.write('<input type="button" value="Prestige" onclick="prestige()">')}
+	   			  	document.write('<input type="button" value="Save" onclick="save()">')
+		   			document.write(' <input type="button" value="Load" onclick="load()">')
+		   		}
+
 	      	}
 	    }
-      
+
+	    function continueplaying() {
+	    	continued = true
+	    	afterupgrade()
+	    }
+
+      afterupgrade()
       function upgrade() {
-      	var requirement = upgradecount * 10
       	if(value>=requirement) {
       		value = value - requirement
       		upgradecount = upgradecount * 2 * prestigelevel
@@ -38,11 +60,16 @@
       }
       
       function afterupgrade() {
+      	var prestigegoal = 25000000*prestigelevel
+      	requirement = upgradecount * 10
       	document.body.innerHTML = '';
-      	document.write(value)
+      	document.write(value+" points")
       	document.write("<br>Points Per Click: "+upgradecount)
+      	document.write("<br>Next upgrade cost: "+requirement)
+	  	document.write("<br>Prestige multiplier: "+prestigelevel+" (Upgrades give x"+upgradeplus+" points per click)")
       	document.write('<br><input type="button" value="Add 1" onclick="update();" />')
       	document.write(' <input type="button" value="Upgrade" onclick="upgrade();" /> <br>')
+    	if(value>=prestigegoal) {document.write('<input type="button" value="Prestige" onclick="prestige()">')}
       	document.write('<input type="button" value="Save" onclick="save()">')
       	document.write(' <input type="button" value="Load" onclick="load()">')
       }
@@ -58,6 +85,7 @@
       	localStorage.setItem("points",value)
       	localStorage.setItem("ppc",upgradecount)
       	localStorage.setItem("prestigeLevel",prestigelevel)
+      	afterupgrade()
       }
       
       //function importsave() {
@@ -67,10 +95,26 @@
 //      }
       
       function prestige() {
-      	prestigelevel = prestigelevel*2
+      	prestigegoal = 25000000*prestigelevel
+      	while (value >= prestigegoal) {
+      		prestigelevel = prestigelevel*2
+  			prestigegoal = 25000000*prestigelevel
+      	    value -= prestigegoal
+      		upgradecount = 1
+      	}
+      	value = 0
+      	afterupgrade()
+      	save()
+      }
+
+      function reset() {
       	value = 0
       	upgradecount = 1
-      	save()
+      	prestigelevel = 1
+      	localStorage.setItem("points",value)
+      	localStorage.setItem("ppc",upgradecount)
+      	localStorage.setItem("prestigeLevel",prestigelevel)
+      	localStorage.setItem("autoClickersUnlocked","yes")
       	afterupgrade()
       }
       </script>
