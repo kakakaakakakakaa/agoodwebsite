@@ -7,27 +7,10 @@ Please enter the password below:<br>
 <script type="text/javascript">
 	function savenote(){
     	var text=document.getElementById('note').value;
-	var supposedtext = readTextFile("contrasenaadmin.txt")
-    	if(text == supposedtext) {
+    	if(text == "Bitch Lasagna") {
           alert("Wait how the fuck? This reads a file from my fucking drive!")
       } else {
           alert("Wrong Password!")
       }
 	}
-	function readTextFile(file){
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
-    rawFile.onreadystatechange = function ()
-    {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                var allText = rawFile.responseText;
-                alert(allText);
-            }
-        }
-    }
-    rawFile.send(null);
-}
 </script>
