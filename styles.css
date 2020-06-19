@@ -14,5 +14,6 @@ a{
 }
 input{
   color:white;
-  background-color:#00FFFF
+  background-color:#00FFFF;
+    font-family:"Comic Sans MS", cursive, sans-serif;
 }
